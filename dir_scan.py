@@ -8,6 +8,7 @@ try:
     parser.add_argument('dir', nargs='?', default='.', help='directory to scan')
     parser.add_argument('--len', nargs='?', default='2', type=int, help='length of each depth')
     parser.add_argument('--filter', nargs='?', default='', help='filter keywords, delimited by comma:\',\'')
+    parser.add_argument('--dir-only', nargs='?', const=True, default=False, type=bool, help='show directory only')
     result = parser.parse_args()
 except Exception as inst:
     print("error: {0}".format(inst))
@@ -21,7 +22,7 @@ for dirname, subdir, files in os.walk(result.dir):
         sublength = length+result.len
         print ('='*length+'['+dirname+']')
         for f in files:
-            if result.filter and reduce(lambda x,y: x or y,map(lambda x: x in f, result.filter.split(','))):
+            if result.dir_only or (result.filter and reduce(lambda x,y: x or y,map(lambda x: x in f, result.filter.split(',')))):
                 pass
             else:
                 print ('-'*sublength+f)
