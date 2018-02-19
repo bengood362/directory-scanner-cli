@@ -11,7 +11,7 @@ elif sys.platform == "win32":
     directory_delimiter = "\\"
 elif sys.platform == "win64":
     directory_delimiter = "\\"
-else
+else:
     print "Error: the platform you are using is: {0}, guessing directory delimiter is /".format(sys.platform)
     directory_delimiter = "/"
 
