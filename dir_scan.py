@@ -25,12 +25,14 @@ try:
 except Exception as inst:
     print("error: {0}".format(inst))
 
+offset = os.path.abspath(result.dir).count(directory_delimiter)*result.len - result.len
+
 for dirname, subdir, files in os.walk(os.path.abspath(result.dir)):
     if result.filter and reduce(lambda x,y: x or y,map(lambda x: x in dirname, result.filter.split(','))):
         pass
     else:
-        depth = len(dirname.split(directory_delimiter))
-        length = result.len*depth
+        depth = dirname.count(directory_delimiter)
+        length = result.len*depth-offset
         sublength = length+result.len
         print ('='*length+'['+dirname+']')
         for f in files:
