@@ -3,6 +3,18 @@ import os
 import sys
 import argparse
 
+if sys.platform == "linux" or sys.platform == "linux2":
+    directory_delimiter = '/'
+elif sys.platform == "darwin":
+    directory_delimiter = "/"
+elif sys.platform == "win32":
+    directory_delimiter = "\\"
+elif sys.platform == "win64":
+    directory_delimiter = "\\"
+else
+    print "Error: the platform you are using is: {0}, guessing directory delimiter is /".format(sys.platform)
+    directory_delimiter = "/"
+
 try:
     parser = argparse.ArgumentParser(description='Display file tree.')
     parser.add_argument('dir', nargs='?', default='.', help='directory to scan')
@@ -13,11 +25,11 @@ try:
 except Exception as inst:
     print("error: {0}".format(inst))
 
-for dirname, subdir, files in os.walk(result.dir):
+for dirname, subdir, files in os.walk(os.path.abspath(result.dir)):
     if result.filter and reduce(lambda x,y: x or y,map(lambda x: x in dirname, result.filter.split(','))):
         pass
     else:
-        depth = len(dirname.split('/'))
+        depth = len(dirname.split(directory_delimiter))
         length = result.len*depth
         sublength = length+result.len
         print ('='*length+'['+dirname+']')
